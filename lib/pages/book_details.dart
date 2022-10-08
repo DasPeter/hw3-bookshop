@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:share_plus/share_plus.dart';
 
 class BookDetailsPage extends StatefulWidget {
   final dynamic bookData;
@@ -21,7 +22,25 @@ class _BookDetailsPageState extends State<BookDetailsPage> {
       appBar: AppBar(
         title: Text("Datos de Libro"),
         backgroundColor: Colors.grey[700],
-        actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.share))],
+        actions: [
+          IconButton(
+              onPressed: () {
+                var title = widget.bookData["volumeInfo"]["title"];
+                var pageCount = widget.bookData["volumeInfo"]["pageCount"]
+                            .toString() !=
+                        "null"
+                    ? "${widget.bookData["volumeInfo"]["pageCount"]} páginas\n"
+                    : "";
+                print(widget.bookData["volumeInfo"]["previewLink"]);
+                var link =
+                    widget.bookData["volumeInfo"]["previewLink"] != "null"
+                        ? widget.bookData["volumeInfo"]["previewLink"]
+                        : "Enlace no disponible.";
+                Share.share(
+                    'Mira este libro que encontré:\n$title\n$pageCount\n$link');
+              },
+              icon: const Icon(Icons.share))
+        ],
       ),
       body: SizedBox.expand(
         child: Container(
@@ -52,7 +71,7 @@ class _BookDetailsPageState extends State<BookDetailsPage> {
                               child: Text(
                                 widget.bookData["volumeInfo"]["title"],
                                 textAlign: TextAlign.center,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontSize: 30,
                                   fontWeight: FontWeight.w300,
                                 ),
@@ -64,7 +83,7 @@ class _BookDetailsPageState extends State<BookDetailsPage> {
                       Text(
                         widget.bookData["volumeInfo"]["publishedDate"] ??
                             "No hemos encontrado la fecha de publicación.",
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontWeight: FontWeight.w500,
                         ),
                       ),
