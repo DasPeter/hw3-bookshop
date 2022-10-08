@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -21,13 +20,11 @@ class BooksBloc extends Bloc<BooksEvent, BooksState> {
     emit(LoadingState());
 
     // Do http request
-    log("Attempting http books request");
     Uri url = Uri.parse(
         "https://www.googleapis.com/books/v1/volumes?q=${event.bookToSearch}");
 
     try {
       var response = await http.get(url);
-      log("Received http books response");
       var body = jsonDecode(response.body);
 
       if (body["totalItems"] == 0) {

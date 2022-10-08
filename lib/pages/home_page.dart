@@ -1,8 +1,9 @@
 import 'package:bookshop/bloc/books_bloc.dart';
-import 'package:bookshop/pages/book_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_shimmer/flutter_shimmer.dart';
+
+import '../widgets/one_book_grid_widget.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -24,6 +25,10 @@ class HomePage extends StatelessWidget {
               controller: searchController,
               style: TextStyle(color: Colors.grey[700]),
               cursorColor: Colors.grey,
+              onSubmitted: (value) {
+                BlocProvider.of<BooksBloc>(context)
+                    .add(SearchBooksEvent(bookToSearch: searchController.text));
+              },
               decoration: InputDecoration(
                 label: const Text("Ingresa título"),
                 suffixIcon: IconButton(
@@ -42,7 +47,7 @@ class HomePage extends StatelessWidget {
               builder: (context, state) {
                 if (state is LoadingState) {
                   return ListView.builder(
-                    itemCount: 2,
+                    itemCount: 3,
                     itemBuilder: (BuildContext context, int index) {
                       return const VideoShimmer();
                     },
@@ -78,40 +83,6 @@ class HomePage extends StatelessWidget {
             )),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class OneBookGridWidget extends StatelessWidget {
-  final dynamic bookData;
-  const OneBookGridWidget({super.key, this.bookData});
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => BookDetailsPage(bookData: bookData)));
-      },
-      child: Column(
-        children: [
-          // height: 150,
-          Image.network(
-              bookData["volumeInfo"]["imageLinks"] != null
-                  ? bookData["volumeInfo"]["imageLinks"]["thumbnail"]
-                  : "https://biotrop.org/images/default-book.png",
-              height: 150),
-          Expanded(
-            child: Text(
-              "${bookData["volumeInfo"]["title"]}",
-              maxLines: 2,
-              textAlign: TextAlign.center,
-              overflow: TextOverflow.ellipsis,
-              style: const TextStyle(fontWeight: FontWeight.w500),
-            ),
-          )
-        ],
       ),
     );
   }

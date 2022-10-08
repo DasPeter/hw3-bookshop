@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -20,32 +18,19 @@ class _BookDetailsPageState extends State<BookDetailsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Datos de Libro"),
+        title: const Text("Datos de libro"),
         backgroundColor: Colors.grey[700],
         actions: [
           IconButton(
-              onPressed: () {
-                var title = widget.bookData["volumeInfo"]["title"];
-                var pageCount = widget.bookData["volumeInfo"]["pageCount"]
-                            .toString() !=
-                        "null"
-                    ? "${widget.bookData["volumeInfo"]["pageCount"]} páginas\n"
-                    : "";
-                print(widget.bookData["volumeInfo"]["previewLink"]);
-                var link =
-                    widget.bookData["volumeInfo"]["previewLink"] != "null"
-                        ? widget.bookData["volumeInfo"]["previewLink"]
-                        : "Enlace no disponible.";
-                Share.share(
-                    'Mira este libro que encontré:\n$title\n$pageCount\n$link');
-              },
-              icon: const Icon(Icons.share))
+            onPressed: shareBook,
+            icon: const Icon(Icons.share),
+          )
         ],
       ),
       body: SizedBox.expand(
         child: Container(
           // color: Colors.blue,
-          padding: EdgeInsets.all(10),
+          padding: const EdgeInsets.all(10),
           child: SingleChildScrollView(
             child: Column(
               children: [
@@ -58,7 +43,7 @@ class _BookDetailsPageState extends State<BookDetailsPage> {
                 ),
                 Container(
                   // color: Colors.green,
-                  padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                  padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -115,5 +100,17 @@ class _BookDetailsPageState extends State<BookDetailsPage> {
         ),
       ),
     );
+  }
+
+  void shareBook() {
+    var title = widget.bookData["volumeInfo"]["title"];
+    var pageCount =
+        widget.bookData["volumeInfo"]["pageCount"].toString() != "null"
+            ? "${widget.bookData["volumeInfo"]["pageCount"]} páginas\n"
+            : "";
+    var link = widget.bookData["volumeInfo"]["previewLink"] != "null"
+        ? widget.bookData["volumeInfo"]["previewLink"]
+        : "Enlace no disponible.";
+    Share.share('Mira este libro que encontré:\n$title\n$pageCount\n$link');
   }
 }
