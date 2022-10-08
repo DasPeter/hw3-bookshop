@@ -9,10 +9,12 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.2
+  bloc:
   flutter_bloc:
   flutter_shimmer:
   http:
   share_plus:
+  equatable:
 
 dev_dependencies:
   flutter_test:

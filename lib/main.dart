@@ -1,7 +1,13 @@
 import 'package:bookshop/pages/home_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-void main() => runApp(const MyApp());
+import 'bloc/books_bloc.dart';
+
+void main() => runApp(BlocProvider(
+      create: (context) => BooksBloc(),
+      child: const MyApp(),
+    ));
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
